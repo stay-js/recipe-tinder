@@ -8,7 +8,6 @@ export const recipes = table('recipes', (d) => ({
   id: d.bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
   userId: d.varchar('user_id', { length: 256 }).notNull(),
   createdAt: d.timestamp('created_at').defaultNow(),
-  updatedAt: d.timestamp('updated_at').defaultNow().onUpdateNow(),
 }));
 
 export const recipeData = table(
@@ -37,8 +36,6 @@ export const ingredients = table('ingredients', (d) => ({
   id: d.bigint('id', { mode: 'number', unsigned: true }).primaryKey().autoincrement(),
   name: d.varchar('name', { length: 256 }).notNull(),
   unit: d.varchar('unit', { length: 64 }).notNull(),
-  createdAt: d.timestamp('created_at').defaultNow(),
-  updatedAt: d.timestamp('updated_at').defaultNow().onUpdateNow(),
 }));
 
 export const ingredientRecipeData = table(
@@ -53,8 +50,6 @@ export const ingredientRecipeData = table(
       .notNull()
       .references(() => ingredients.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
     quantity: d.float('quantity', { unsigned: true }).notNull(),
-    createdAt: d.timestamp('created_at').defaultNow(),
-    updatedAt: d.timestamp('updated_at').defaultNow().onUpdateNow(),
   }),
   (t) => [primaryKey({ columns: [t.recipeDataId, t.ingredientId] })],
 );

@@ -43,6 +43,13 @@
       "when": 1768508617760,
       "tag": "0005_create_admins_table",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1768513305399,
+      "tag": "0006_remove_unnecessary_timestamps",
+      "breakpoints": true
     }
   ]
 }
