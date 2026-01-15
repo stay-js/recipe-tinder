@@ -1,0 +1,8 @@
+# 📋 Recept Tinder – Dokumentáció
+
+Üdvözlünk a **Recept Tinder** dokumentációs oldalán!
+Itt megtalálod az alkalmazás különböző komponenseinek leírását, telepítési útmutatókat és fejlesztői információkat.
+
+## ⚙️ Fejlesztői dokumentáció
+
+- [Adatbázis dokumentációja](db/README.md)
