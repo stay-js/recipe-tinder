@@ -39,7 +39,7 @@ docker compose down
 
 ## PHPMyAdmin elérése
 
-- URL: `http://localhost:8080`
+- URL: <http://localhost:8080>
 - Szerver: üresen hagyható, amennyiben az `.env` fájlban meg van adva a `PMA_HOST` érték
 - Felhasználónév: a `.env` fájlban megadott `MYSQL_USER` érték
 - Jelszó: a `.env` fájlban megadott `MYSQL_PASSWORD` érték
