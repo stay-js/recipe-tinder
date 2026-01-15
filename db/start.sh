@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f ".env" ]; then
-    echo "A .env fájl még nem létezik"
+    echo ".env file does not exist. Copying from .env.example..."
     cp .env.example .env
 fi
 

@@ -7,7 +7,7 @@
 ## Futtatás
 
 ```bash
-sh start.sh
+bash start.sh
 ```
 
 ### Első indítás esetén
