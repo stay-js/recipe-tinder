@@ -29,6 +29,13 @@
       "when": 1768489265233,
       "tag": "0003_alter_recipe_data_table_add_preview_image",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1768490433748,
+      "tag": "0004_seed_categories_table",
+      "breakpoints": true
     }
   ]
 }
