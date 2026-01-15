@@ -8,6 +8,27 @@
       "when": 1768487421445,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1768488908387,
+      "tag": "0001_create_categories_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1768489043107,
+      "tag": "0002_create_category_recipe_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1768489265233,
+      "tag": "0003_alter_recipe_data_table_add_preview_image",
+      "breakpoints": true
     }
   ]
 }
