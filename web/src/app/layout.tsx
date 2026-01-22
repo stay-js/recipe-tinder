@@ -6,8 +6,8 @@ import { shadcn } from '@clerk/themes';
 import { ThemeProvider } from 'next-themes';
 import { GeistSans } from 'geist/font/sans';
 
-import { Header } from '~/components/header';
 import { Toaster } from '~/components/ui/sonner';
+import { Header } from '~/components/header';
 
 export const viewport: Viewport = {
   width: 'device-width',
