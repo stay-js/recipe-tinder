@@ -1,15 +1,42 @@
 'use client';
 
-import { Notebook } from 'lucide-react';
+import { ShieldCheck, Notebook, Globe } from 'lucide-react';
 
+import { useIsAdmin } from '~/hooks/use-is-admin';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarRail } from '~/components/ui/sidebar';
 import { SidebarUser } from './sidebar-user';
 import { SidebarNavigation } from './sidebar-navigation';
 
 export function DashboardSidebar(props: React.ComponentProps<typeof Sidebar>) {
-  const navItems = [
+  const { isAdmin } = useIsAdmin();
+
+  const adminNavItems = [
     {
-      label: 'Recepteim',
+      label: 'Admin',
+      visible: true,
+      items: [
+        {
+          title: 'Receptek kezelése',
+          icon: ShieldCheck,
+          isActive: true,
+          items: [
+            {
+              title: 'Receptek jóváhagyása',
+              url: '/dashboard/admin/recipies/approve',
+            },
+            {
+              title: 'Receptek kezelése',
+              url: '/dashboard/admin/recipies/manage',
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const publicNavItems = [
+    {
+      label: 'Receptek',
       visible: true,
       items: [
         {
@@ -18,14 +45,31 @@ export function DashboardSidebar(props: React.ComponentProps<typeof Sidebar>) {
           isActive: true,
           items: [
             {
+              title: 'Recept létrehozása',
+              url: '/dashboard/recipes/create',
+            },
+            {
               title: 'Recepteim kezelése',
-              url: '/dashboard/my-recipes',
+              url: '/dashboard/recipes/manage',
+            },
+          ],
+        },
+        {
+          title: 'Felfedezés',
+          icon: Globe,
+          isActive: true,
+          items: [
+            {
+              title: 'Mentett receptek',
+              url: '/dashboard/recipes/saved',
             },
           ],
         },
       ],
     },
   ];
+
+  const navItems = isAdmin ? adminNavItems.concat(publicNavItems) : publicNavItems;
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>

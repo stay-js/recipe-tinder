@@ -22,7 +22,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
 
           <Button variant="link" className="px-2" asChild>
-            <Link href="/dashboard">Recept Tinder</Link>
+            <Link href="/">Vissza a főoldalra</Link>
           </Button>
         </header>
 
