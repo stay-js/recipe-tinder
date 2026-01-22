@@ -1,8 +1,11 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useClerk } from '@clerk/nextjs';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Notebook, Settings } from 'lucide-react';
 
+import { useIsMobile } from '~/hooks/use-mobile';
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -11,9 +14,9 @@ import {
   DropdownMenuSeparator,
 } from '~/components/ui/dropdown-menu';
 import { User } from '~/components/user';
-import { useIsMobile } from '~/hooks/use-mobile';
 
 export function UserDropdown({ location }: { location: 'left' | 'right' }) {
+  const pathname = usePathname();
   const isMobile = useIsMobile();
   const { openUserProfile, signOut } = useClerk();
 
@@ -32,11 +35,20 @@ export function UserDropdown({ location }: { location: 'left' | 'right' }) {
 
       <DropdownMenuGroup>
         <DropdownMenuItem asChild className="w-full">
-          <button onClick={() => openUserProfile()}>
+          <button onClick={() => openUserProfile()} className="flex items-center gap-2">
             <Settings />
             <span>Fiók kezelése</span>
           </button>
         </DropdownMenuItem>
+
+        {!pathname.startsWith('/dashboard') && (
+          <DropdownMenuItem asChild className="w-full">
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <Notebook />
+              <span>Recepteim</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuItem asChild className="w-full">
           <button onClick={() => signOut({ redirectUrl: '/' })} className="flex items-center gap-2">
