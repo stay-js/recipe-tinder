@@ -6,6 +6,7 @@ import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar';
 import { DashboardSidebar } from '~/components/dashboard-sidebar';
+import { Footer } from '~/components/footer';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await currentUser();
@@ -28,7 +29,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
         <div className="h-full p-6 pb-12">{children}</div>
 
-        {/* <Footer /> */}
+        <Footer />
       </SidebarInset>
     </SidebarProvider>
   );
