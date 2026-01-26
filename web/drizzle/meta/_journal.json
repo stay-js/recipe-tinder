@@ -64,6 +64,20 @@
       "when": 1769413441726,
       "tag": "0008_seed_admins_table",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1769423825047,
+      "tag": "0009_seed_units_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1769423910835,
+      "tag": "0010_seed_ingredients_table",
+      "breakpoints": true
     }
   ]
 }

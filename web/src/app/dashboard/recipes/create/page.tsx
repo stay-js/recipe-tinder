@@ -1,4 +1,5 @@
 import { createMetadata } from '~/lib/create-metadata';
+import { RecipeForm } from '~/components/recipe-form';
 
 export const metadata = createMetadata({
   path: '/dashboard/recipes/create',
@@ -8,9 +9,5 @@ export const metadata = createMetadata({
 });
 
 export default async function CreatePage() {
-  return (
-    <div>
-      <h1>Recept létrehozása</h1>
-    </div>
-  );
+  return <RecipeForm />;
 }
