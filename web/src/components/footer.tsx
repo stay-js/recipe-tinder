@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ChefHat, UtensilsCrossed, Github, Globe } from 'lucide-react';
 
+import { Separator } from '~/components/ui/separator';
 import { ThemeSwitcher } from '~/components/theme-switcher';
 
 export function Footer() {
@@ -105,7 +106,7 @@ export function Footer() {
           </div>
         </div>
 
-        <hr />
+        <Separator />
 
         <div className="text-muted-foreground flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
           <p>&copy; 2026 - Find Your Dinner. Minden jog fenntartva.</p>
