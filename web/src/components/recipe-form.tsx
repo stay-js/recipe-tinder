@@ -17,6 +17,7 @@ import { categoriesSchema, ingredientsSchema, unitsSchema } from '~/lib/zod-sche
 import { isIntegerString, isPositiveIntegerString } from '~/lib/zod-helpers';
 import { apiGet } from '~/lib/api-get';
 import { useIsMobile } from '~/hooks/use-mobile';
+import { cn } from '~/lib/utils';
 
 const formSchema = z.object({
   title: z
@@ -246,7 +247,10 @@ export function RecipeForm() {
                         <Badge
                           key={category.id}
                           variant={isSelected ? 'default' : 'outline'}
-                          className="flex cursor-pointer gap-2 px-3 py-1.5 text-sm transition-colors select-none"
+                          className={cn(
+                            'flex cursor-pointer gap-2 px-3 py-1.5 text-sm transition-colors select-none',
+                            fieldState.invalid && 'border-destructive',
+                          )}
                           onClick={() => {
                             const nextValue = isSelected
                               ? field.value.filter((id) => id !== category.id)
