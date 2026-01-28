@@ -22,6 +22,7 @@ import { useIsMobile } from '~/hooks/use-mobile';
 import { cn } from '~/lib/utils';
 
 const formSchema = z.object({
+  recipeId: z.number().int().positive().optional(),
   title: z
     .string()
     .trim()
@@ -67,26 +68,10 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const defaultValues = {
-  title: '',
-  previewImageUrl: '',
-  description: '',
-  instructions: '',
-  prepTimeMinutes: '',
-  cookTimeMinutes: '',
-  servings: '',
-  categories: [],
-  ingredients: [
-    {
-      ingredientId: '',
-      quantity: '',
-      unitId: '',
-    },
-  ],
-} satisfies FormSchema;
-
-export function RecipeForm() {
+export function RecipeForm({ defaultValues }: { defaultValues: FormSchema }) {
   const isMobile = useIsMobile();
+
+  const isEdit = !!defaultValues.recipeId;
 
   const { handleSubmit, control, reset } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -127,9 +112,12 @@ export function RecipeForm() {
         </div>
 
         <div>
-          <h1 className="text-foreground text-2xl font-semibold">Recept létrehozása</h1>
+          <h1 className="text-foreground text-2xl font-semibold">
+            Recept {isEdit ? 'szerkesztése' : 'létrehozása'}
+          </h1>
           <p className="text-muted-foreground text-sm">
-            Töltsd ki az alábbi űrlapot egy új recept létrehozásához.
+            Töltsd ki az alábbi űrlapot{' '}
+            {isEdit ? 'a recept szerkesztéséhez' : 'egy új recept létrehozásához'}.
           </p>
         </div>
       </div>
@@ -406,7 +394,7 @@ export function RecipeForm() {
           <Button type="submit">
             <ChefHat className="size-4" />
 
-            <span>Recept létrehozása</span>
+            <span>Recept {isEdit ? 'szerkesztése' : 'létrehozása'}</span>
           </Button>
         </div>
       </form>

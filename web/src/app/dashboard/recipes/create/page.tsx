@@ -8,6 +8,24 @@ export const metadata = createMetadata({
   noIndex: true,
 });
 
+const defaultValues = {
+  title: '',
+  previewImageUrl: '',
+  description: '',
+  instructions: '',
+  prepTimeMinutes: '',
+  cookTimeMinutes: '',
+  servings: '',
+  categories: [],
+  ingredients: [
+    {
+      ingredientId: '',
+      quantity: '',
+      unitId: '',
+    },
+  ],
+};
+
 export default async function CreatePage() {
-  return <RecipeForm />;
+  return <RecipeForm defaultValues={defaultValues} />;
 }
