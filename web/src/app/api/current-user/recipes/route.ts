@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { desc, eq, inArray } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 import { db } from '~/server/db';
-import {
-  categories,
-  categoryRecipe,
-  recipeData,
-  recipes as recipesTable,
-} from '~/server/db/schema';
+import { categories, categoryRecipe, recipeData, recipes } from '~/server/db/schema';
 
 export async function GET() {
   const { isAuthenticated, userId } = await auth();
@@ -17,40 +12,43 @@ export async function GET() {
     return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 });
   }
 
-  const recipes = await db
+  const recipeRecords = await db
     .select()
-    .from(recipesTable)
-    .where(eq(recipesTable.userId, userId))
-    .orderBy(desc(recipesTable.createdAt));
+    .from(recipes)
+    .where(eq(recipes.userId, userId))
+    .orderBy(desc(recipes.createdAt));
 
   const result = await Promise.all(
-    recipes.map(async (recipe) => {
-      const categoryRelations = await db
-        .select()
-        .from(categoryRecipe)
-        .where(eq(categoryRecipe.recipeId, recipe.id));
+    recipeRecords.map(async (recipe) => {
+      const [categoryRecords, data] = await Promise.all([
+        db
+          .select({
+            id: categories.id,
+            name: categories.name,
+          })
+          .from(categoryRecipe)
+          .innerJoin(categories, eq(categories.id, categoryRecipe.categoryId))
+          .where(eq(categoryRecipe.recipeId, recipe.id)),
 
-      const categoryIds = categoryRelations.map((relation) => relation.categoryId);
+        db
+          .select()
+          .from(recipeData)
+          .where(eq(recipeData.recipeId, recipe.id))
+          .orderBy(desc(recipeData.createdAt))
+          .limit(1),
+      ]);
 
-      const categoryRecords = await db
-        .select()
-        .from(categories)
-        .where(inArray(categories.id, categoryIds));
-
-      const data = await db
-        .select()
-        .from(recipeData)
-        .where(eq(recipeData.recipeId, recipe.id))
-        .orderBy(desc(recipeData.createdAt))
-        .limit(1);
+      if (data.length === 0 || !data[0]) {
+        throw new Error(`No recipe data found for recipe ID: ${recipe.id}`);
+      }
 
       return {
         recipe,
-        recipeData: data?.[0],
+        recipeData: data[0],
         categories: categoryRecords,
       };
     }),
   );
 
-  return NextResponse.json({ recipes: result });
+  return NextResponse.json(result);
 }
