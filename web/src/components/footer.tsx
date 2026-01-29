@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { ChefHat, UtensilsCrossed, Github, Globe } from 'lucide-react';
+import { UtensilsCrossed, Github, Globe } from 'lucide-react';
 
 import { Separator } from '~/components/ui/separator';
 import { ThemeSwitcher } from '~/components/theme-switcher';
+import { Logo } from '~/components/logo';
 
 export function Footer() {
   return (
@@ -12,7 +13,7 @@ export function Footer() {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-2">
-                <ChefHat className="text-accent-foreground size-6" />
+                <Logo />
                 <h3 className="text-lg font-semibold">Find Your Dinner.</h3>
               </div>
 
