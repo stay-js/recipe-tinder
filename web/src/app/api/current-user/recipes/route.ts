@@ -14,7 +14,7 @@ export async function GET() {
   const { isAuthenticated, userId } = await auth();
 
   if (!isAuthenticated) {
-    return NextResponse.json({ isAdmin: false, error: 'UNAUTHORIZED' }, { status: 401 });
+    return NextResponse.json({ error: 'UNAUTHORIZED' }, { status: 401 });
   }
 
   const recipes = await db
