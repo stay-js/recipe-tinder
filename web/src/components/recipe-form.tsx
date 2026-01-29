@@ -209,7 +209,7 @@ export function RecipeForm({ defaultValues }: { defaultValues: FormSchema }) {
                 label={
                   <>
                     <Users className="size-4" />
-                    <span>Adagok</span>
+                    <span>Adagok száma</span>
                   </>
                 }
                 placeholder="4"
