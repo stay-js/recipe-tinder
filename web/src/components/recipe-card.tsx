@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Clock, Users, Bookmark, CheckCircle2 } from 'lucide-react';
 
 import {
@@ -116,7 +117,11 @@ export function RecipeCard({
           ['edit', 'tinder'].includes(pageType) && 'sm:grid-cols-2',
         )}
       >
-        {pageType === 'search' && <Button>Megtekintés</Button>}
+        {pageType === 'search' && (
+          <Button asChild>
+            <Link href={`/recipes/${recipeId}`}>Megtekintés</Link>
+          </Button>
+        )}
 
         {pageType === 'final' && <Button>Ezt választom</Button>}
 
@@ -130,7 +135,9 @@ export function RecipeCard({
         {pageType === 'edit' && (
           <>
             <Button variant="outline">Szerkesztés</Button>
-            <Button>Megtekintés</Button>
+            <Button asChild>
+              <Link href={`/recipes/${recipeId}`}>Megtekintés</Link>
+            </Button>
           </>
         )}
       </CardFooter>
