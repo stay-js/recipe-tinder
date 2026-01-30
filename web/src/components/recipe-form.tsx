@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment } from 'react';
+import { useRouter } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Controller, useFieldArray, useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -73,6 +74,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export function RecipeForm({ defaultValues }: { defaultValues: FormSchema }) {
+  const router = useRouter();
   const isMobile = useIsMobile();
 
   const isEdit = !!defaultValues.recipeId;
@@ -105,6 +107,7 @@ export function RecipeForm({ defaultValues }: { defaultValues: FormSchema }) {
 
   const { mutateAsync: createRecipe } = useMutation({
     mutationFn: (data: CreateRecipeSchema) => POST('/api/recipes', data),
+    onSuccess: () => router.push('/dashboard/recipes/manage'),
   });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
