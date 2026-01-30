@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Clock, Users, Bookmark, CheckCircle2 } from 'lucide-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import {
   Card,
@@ -12,20 +15,57 @@ import {
 } from '~/components/ui/card';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import type { Recipe } from '~/lib/zod-schemas';
+import { type Recipe, savedRecipesSchema } from '~/lib/zod-schemas';
+import { del, get, post } from '~/lib/api-utils';
 import { cn } from '~/lib/utils';
 
 export function RecipeCard({
   pageType,
   recipe,
-  isSaved = false,
   showIsVerified = false,
 }: {
   pageType: 'tinder' | 'final' | 'manage' | 'search';
   recipe: Recipe;
-  isSaved: boolean;
   showIsVerified?: boolean;
 }) {
+  const [displayIsSaved, setDisplayIsSaved] = useState(false);
+
+  const utils = useQueryClient();
+
+  const { data: savedRecipes } = useQuery({
+    queryKey: ['current-user-saved-recipes'],
+    queryFn: () => get('/api/current-user/saved-recipes', savedRecipesSchema),
+  });
+
+  const { mutate: saveRecipe, isPending: isSavePending } = useMutation({
+    mutationFn: (recipeId: number) => post('/api/current-user/saved-recipes', { recipeId }),
+    onMutate: () => setDisplayIsSaved(true),
+    onSettled: () => utils.invalidateQueries({ queryKey: ['current-user-saved-recipes'] }),
+    onError: () => toast.error('Hiba történt a recept mentése során. Kérlek, próbáld újra később!'),
+  });
+
+  const { mutate: unsaveRecipe, isPending: isUnsavePending } = useMutation({
+    mutationFn: (recipeId: number) => del(`/api/current-user/saved-recipes/${recipeId}`),
+    onMutate: () => setDisplayIsSaved(false),
+    onSettled: () => utils.invalidateQueries({ queryKey: ['current-user-saved-recipes'] }),
+    onError: () =>
+      toast.error('Hiba történt a mentett recept eltávolítása során. Kérlek, próbáld újra később!'),
+  });
+
+  const isSaved = savedRecipes?.some((saved) => saved.recipeId === recipe.recipe.id) ?? false;
+
+  useEffect(() => setDisplayIsSaved(isSaved), [isSaved]);
+
+  const handleSaveToggle = () => {
+    if (isSavePending || isUnsavePending) return;
+
+    if (isSaved) {
+      unsaveRecipe(recipe.recipe.id);
+    } else {
+      saveRecipe(recipe.recipe.id);
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm gap-6 overflow-hidden pt-0">
       <div className="relative aspect-4/3 w-full overflow-hidden">
@@ -40,11 +80,13 @@ export function RecipeCard({
           variant="ghost"
           size="icon"
           className="bg-background/80 absolute top-3 right-3 backdrop-blur-sm"
+          disabled={isSavePending || isUnsavePending}
+          onClick={handleSaveToggle}
         >
-          <Bookmark className={cn('size-5', isSaved && 'fill-current')} />
+          <Bookmark className={cn('size-5', displayIsSaved && 'fill-current')} />
 
           <span className="sr-only">
-            {isSaved ? 'Törlés a mentett receptek közül' : 'Recept mentése'}
+            {displayIsSaved ? 'Törlés a mentett receptek közül' : 'Recept mentése'}
           </span>
         </Button>
 

@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { db } from '~/server/db';
 import { recipes, categoryRecipe, recipeData, ingredientRecipeData } from '~/server/db/schema';
 
-export const createRecipeSchema = z.object({
+const createRecipeSchema = z.object({
   title: z.string().trim().min(1).max(512),
   previewImageUrl: z.url().trim().max(2048),
   description: z.string().trim().min(1),

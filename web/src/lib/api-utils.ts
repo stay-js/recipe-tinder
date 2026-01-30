@@ -27,3 +27,13 @@ export async function post(url: string, body: unknown) {
 
   return json;
 }
+
+export async function del(url: string) {
+  const res = await fetch(url, { method: 'DELETE' });
+
+  if (!res.ok) {
+    throw new Error(`API DELETE request to ${url} failed with status ${res.status}`);
+  }
+
+  return null;
+}
