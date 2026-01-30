@@ -100,7 +100,7 @@ export function RecipeCard({
 
       <CardFooter
         className={cn(
-          'grid grid-cols-1 gap-2 border-t',
+          'mt-auto grid grid-cols-1 gap-2 border-t',
           ['manage', 'tinder'].includes(pageType) && 'sm:grid-cols-2',
         )}
       >
