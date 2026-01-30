@@ -130,7 +130,7 @@ export function RecipeForm({ defaultValues }: { defaultValues: FormSchema }) {
   };
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-8">
+    <div className="container flex max-w-4xl flex-col gap-8">
       <div className="flex items-center gap-3">
         <div className="bg-primary text-primary-foreground rounded-lg p-2">
           <ChefHat className="size-6" />
