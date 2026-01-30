@@ -10,7 +10,7 @@ export const metadata = createMetadata({
 
 export default async function ManagePage() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="container flex flex-col gap-4 px-0">
       <h1 className="text-foreground text-2xl font-semibold">Recepteim kezelése</h1>
 
       <Recipes />

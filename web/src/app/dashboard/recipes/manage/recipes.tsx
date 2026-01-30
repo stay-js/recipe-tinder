@@ -2,18 +2,27 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { useSidebar } from '~/components/ui/sidebar';
 import { RecipeCard } from '~/components/recipe-card';
 import { GET } from '~/lib/api-utils';
 import { recipesSchema } from '~/lib/zod-schemas';
+import { cn } from '~/lib/utils';
 
 export function Recipes() {
+  const { open: isSidebarOpen } = useSidebar();
+
   const { data: recipes, isLoading } = useQuery({
     queryKey: ['current-user-recipes'],
     queryFn: () => GET('/api/current-user/recipes', recipesSchema),
   });
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div
+      className={cn(
+        'grid grid-cols-1 gap-6',
+        isSidebarOpen ? 'lg:grid-cols-2 xl:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3',
+      )}
+    >
       {isLoading && <p>TODO: skeleton</p>}
 
       {recipes?.map((recipe) => (

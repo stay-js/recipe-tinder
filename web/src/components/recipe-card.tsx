@@ -67,7 +67,7 @@ export function RecipeCard({
   };
 
   return (
-    <Card className="w-full max-w-sm gap-6 overflow-hidden pt-0">
+    <Card className="w-full gap-6 overflow-hidden pt-0">
       <div className="relative aspect-4/3 w-full overflow-hidden">
         <Image
           src={recipe.recipeData.previewImageUrl || '/placeholder.svg'}
