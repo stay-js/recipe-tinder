@@ -14,38 +14,21 @@ import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
 
-export type RecipeCardProps = {
-  recipeId: number;
-  title: string;
-  previewImageUrl: string;
-  description: string;
-  prepTimeMinutes: number;
-  cookTimeMinutes: number;
-  servings: number;
-  verified: boolean;
-  categories: {
-    name: string;
-    id: number;
-  }[];
-  isSaved?: boolean;
+import type { Recipe } from '~/lib/zod-schemas';
 
+export type RecipeCardProps = {
+  recipe: Recipe;
+
+  isSaved?: boolean;
   showIsSaved?: boolean;
   showIsVerified?: boolean;
   pageType: 'tinder' | 'final' | 'manage' | 'search';
 };
 
 export function RecipeCard({
-  recipeId,
-  title,
-  description,
-  previewImageUrl,
-  prepTimeMinutes,
-  cookTimeMinutes,
-  servings,
-  verified = false,
-  categories = [],
-  isSaved = false,
+  recipe,
 
+  isSaved = false,
   showIsSaved = true,
   showIsVerified = false,
   pageType,
@@ -54,8 +37,8 @@ export function RecipeCard({
     <Card className="w-full max-w-sm gap-6 overflow-hidden pt-0">
       <div className="relative aspect-4/3 w-full overflow-hidden">
         <Image
-          src={previewImageUrl || '/placeholder.svg'}
-          alt={title}
+          src={recipe.recipeData.previewImageUrl || '/placeholder.svg'}
+          alt={recipe.recipeData.title}
           fill
           className="w-full object-cover transition-transform duration-300 hover:scale-105"
         />
@@ -74,7 +57,7 @@ export function RecipeCard({
           </Button>
         )}
 
-        {showIsVerified && verified && (
+        {showIsVerified && recipe.recipeData.verified && (
           <Badge className="absolute top-3 left-3 bg-emerald-600 hover:bg-emerald-600">
             <CheckCircle2 className="size-3" />
             <span>Jóváhagyva</span>
@@ -84,7 +67,7 @@ export function RecipeCard({
 
       <CardHeader className="gap-4">
         <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
+          {recipe.categories.map((category) => (
             <Badge key={category.id} variant="secondary" className="text-xs">
               {category.name}
             </Badge>
@@ -92,8 +75,10 @@ export function RecipeCard({
         </div>
 
         <div className="flex flex-col gap-2">
-          <CardTitle className="line-clamp-1 text-lg">{title}</CardTitle>
-          <CardDescription className="line-clamp-2">{description}</CardDescription>
+          <CardTitle className="line-clamp-1 text-lg">{recipe.recipeData.title}</CardTitle>
+          <CardDescription className="line-clamp-2">
+            {recipe.recipeData.description}
+          </CardDescription>
         </div>
       </CardHeader>
 
@@ -101,12 +86,14 @@ export function RecipeCard({
         <div className="text-muted-foreground flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
             <Clock className="size-4" />
-            <span>{prepTimeMinutes + cookTimeMinutes} perc</span>
+            <span>
+              {recipe.recipeData.prepTimeMinutes + recipe.recipeData.cookTimeMinutes} perc
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
             <Users className="size-4" />
-            <span>{servings} adag</span>
+            <span>{recipe.recipeData.servings} adag</span>
           </div>
         </div>
       </CardContent>
@@ -119,7 +106,7 @@ export function RecipeCard({
       >
         {pageType === 'search' && (
           <Button asChild>
-            <Link href={`/recipes/${recipeId}`}>Megtekintés</Link>
+            <Link href={`/recipes/${recipe.recipe.id}`}>Megtekintés</Link>
           </Button>
         )}
 
@@ -135,11 +122,11 @@ export function RecipeCard({
         {pageType === 'manage' && (
           <>
             <Button variant="outline">
-              <Link href={`/dashboard/recipes/edit/${recipeId}`}>Szerkesztés</Link>
+              <Link href={`/dashboard/recipes/edit/${recipe.recipe.id}`}>Szerkesztés</Link>
             </Button>
 
             <Button asChild>
-              <Link href={`/recipes/${recipeId}`}>Megtekintés</Link>
+              <Link href={`/recipes/${recipe.recipe.id}`}>Megtekintés</Link>
             </Button>
           </>
         )}
