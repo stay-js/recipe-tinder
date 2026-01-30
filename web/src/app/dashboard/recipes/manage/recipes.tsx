@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useSidebar } from '~/components/ui/sidebar';
 import { RecipeCard } from '~/components/recipe-card';
-import { GET } from '~/lib/api-utils';
+import { RecipeCardSkeleton } from '~/components/recipe-card-skeleton';
 import { recipesSchema } from '~/lib/zod-schemas';
+import { GET } from '~/lib/api-utils';
 import { cn } from '~/lib/utils';
 
 export function Recipes() {
@@ -23,7 +24,7 @@ export function Recipes() {
         isSidebarOpen ? 'lg:grid-cols-2 xl:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3',
       )}
     >
-      {isLoading && <p>TODO: skeleton</p>}
+      {isLoading && new Array(3).fill(null).map((_, i) => <RecipeCardSkeleton key={i} />)}
 
       {recipes?.map((recipe) => (
         <RecipeCard key={recipe.recipe.id} pageType="manage" recipe={recipe} showIsVerified />
