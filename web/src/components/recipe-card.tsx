@@ -16,7 +16,7 @@ import {
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { type Recipe, savedRecipesSchema } from '~/lib/zod-schemas';
-import { del, get, post } from '~/lib/api-utils';
+import { GET, POST, DELETE } from '~/lib/api-utils';
 import { cn } from '~/lib/utils';
 
 export function RecipeCard({
@@ -34,18 +34,18 @@ export function RecipeCard({
 
   const { data: savedRecipes } = useQuery({
     queryKey: ['current-user-saved-recipes'],
-    queryFn: () => get('/api/current-user/saved-recipes', savedRecipesSchema),
+    queryFn: () => GET('/api/current-user/saved-recipes', savedRecipesSchema),
   });
 
   const { mutate: saveRecipe, isPending: isSavePending } = useMutation({
-    mutationFn: (recipeId: number) => post('/api/current-user/saved-recipes', { recipeId }),
+    mutationFn: (recipeId: number) => POST('/api/current-user/saved-recipes', { recipeId }),
     onMutate: () => setDisplayIsSaved(true),
     onSettled: () => utils.invalidateQueries({ queryKey: ['current-user-saved-recipes'] }),
     onError: () => toast.error('Hiba történt a recept mentése során. Kérlek, próbáld újra később!'),
   });
 
   const { mutate: unsaveRecipe, isPending: isUnsavePending } = useMutation({
-    mutationFn: (recipeId: number) => del(`/api/current-user/saved-recipes/${recipeId}`),
+    mutationFn: (recipeId: number) => DELETE(`/api/current-user/saved-recipes/${recipeId}`),
     onMutate: () => setDisplayIsSaved(false),
     onSettled: () => utils.invalidateQueries({ queryKey: ['current-user-saved-recipes'] }),
     onError: () =>

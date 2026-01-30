@@ -1,6 +1,6 @@
 import type { ZodType } from 'zod';
 
-export async function get<T>(url: string, schema: ZodType<T>) {
+export async function GET<T>(url: string, schema: ZodType<T>) {
   const res = await fetch(url);
 
   if (!res.ok) {
@@ -12,7 +12,7 @@ export async function get<T>(url: string, schema: ZodType<T>) {
   return schema.parse(json);
 }
 
-export async function post(url: string, body: unknown) {
+export async function POST(url: string, body: unknown) {
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -23,12 +23,10 @@ export async function post(url: string, body: unknown) {
     throw new Error(`API POST request to ${url} failed with status ${res.status}`);
   }
 
-  const json = await res.json();
-
-  return json;
+  return null;
 }
 
-export async function del(url: string) {
+export async function DELETE(url: string) {
   const res = await fetch(url, { method: 'DELETE' });
 
   if (!res.ok) {

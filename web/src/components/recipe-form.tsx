@@ -19,7 +19,7 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { FormInput, FormTextarea, FormSelect } from '~/components/form';
 import { categoriesSchema, ingredientsSchema, unitsSchema } from '~/lib/zod-schemas';
 import { isIntegerString, isPositiveIntegerString } from '~/lib/zod-helpers';
-import { get, post } from '~/lib/api-utils';
+import { GET, POST } from '~/lib/api-utils';
 import { useIsMobile } from '~/hooks/use-mobile';
 import { cn } from '~/lib/utils';
 
@@ -90,21 +90,21 @@ export function RecipeForm({ defaultValues }: { defaultValues: FormSchema }) {
 
   const { data: categories, isLoading: isCategoriesLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => get('/api/categories', categoriesSchema),
+    queryFn: () => GET('/api/categories', categoriesSchema),
   });
 
   const { data: ingredients, isLoading: isIngredientsLoading } = useQuery({
     queryKey: ['ingredients'],
-    queryFn: () => get('/api/ingredients', ingredientsSchema),
+    queryFn: () => GET('/api/ingredients', ingredientsSchema),
   });
 
   const { data: units, isLoading: isUnitsLoading } = useQuery({
     queryKey: ['units'],
-    queryFn: () => get('/api/units', unitsSchema),
+    queryFn: () => GET('/api/units', unitsSchema),
   });
 
   const { mutateAsync: createRecipe } = useMutation({
-    mutationFn: (data: CreateRecipeSchema) => post('/api/recipes', data),
+    mutationFn: (data: CreateRecipeSchema) => POST('/api/recipes', data),
   });
 
   const onSubmit: SubmitHandler<FormSchema> = (data) => {
