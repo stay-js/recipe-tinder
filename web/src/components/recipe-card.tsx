@@ -12,9 +12,8 @@ import {
 } from '~/components/ui/card';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import { cn } from '~/lib/utils';
-
 import type { Recipe } from '~/lib/zod-schemas';
+import { cn } from '~/lib/utils';
 
 export type RecipeCardProps = {
   recipe: Recipe;

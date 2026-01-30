@@ -4,12 +4,17 @@ import { useQuery } from '@tanstack/react-query';
 
 import { RecipeCard } from '~/components/recipe-card';
 import { get } from '~/lib/api-utils';
-import { recipesSchema } from '~/lib/zod-schemas';
+import { recipesSchema, savedRecipesSchema } from '~/lib/zod-schemas';
 
 export function Recipes() {
   const { data: recipes, isLoading } = useQuery({
-    queryKey: ['user-recipes'],
+    queryKey: ['current-user-recipes'],
     queryFn: () => get('/api/current-user/recipes', recipesSchema),
+  });
+
+  const { data: savedRecipes } = useQuery({
+    queryKey: ['current-user-saved-recipes'],
+    queryFn: () => get('/api/current-user/saved-recipes', savedRecipesSchema),
   });
 
   return (
@@ -17,7 +22,13 @@ export function Recipes() {
       {isLoading && <p>TODO: skeleton</p>}
 
       {recipes?.map((recipe) => (
-        <RecipeCard key={recipe.recipe.id} showIsVerified pageType="manage" recipe={recipe} />
+        <RecipeCard
+          key={recipe.recipe.id}
+          showIsVerified
+          pageType="manage"
+          recipe={recipe}
+          isSaved={savedRecipes?.some((saved) => saved.recipeId === recipe.recipe.id)}
+        />
       ))}
     </div>
   );
